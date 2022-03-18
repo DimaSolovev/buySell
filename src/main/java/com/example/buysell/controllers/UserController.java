@@ -1,6 +1,6 @@
 package com.example.buysell.controllers;
 
-import com.example.buysell.model.User;
+import com.example.buysell.models.User;
 import com.example.buysell.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 @RequiredArgsConstructor
 public class UserController {
-
     private final UserService userService;
 
     @GetMapping("/login")
@@ -24,11 +23,11 @@ public class UserController {
         return "registration";
     }
 
+
     @PostMapping("/registration")
     public String createUser(User user, Model model) {
         if (!userService.createUser(user)) {
-            model.addAttribute("errorMessage", "Пользователь с email " + user.getEmail() +
-                    " уже существует");
+            model.addAttribute("errorMessage", "Пользователь с email: " + user.getEmail() + " уже существует");
             return "registration";
         }
         return "redirect:/login";

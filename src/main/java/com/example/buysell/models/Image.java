@@ -1,18 +1,18 @@
-package com.example.buysell.model;
+package com.example.buysell.models;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "images")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +30,6 @@ public class Image {
     private boolean isPreviewImage;
     @Lob
     private byte[] bytes;
-
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Product product;
 }

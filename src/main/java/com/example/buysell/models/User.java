@@ -1,19 +1,19 @@
-package com.example.buysell.model;
+package com.example.buysell.models;
 
-import com.example.buysell.enums.Role;
+import com.example.buysell.models.enums.Role;
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
-@Table
+@Table(name = "users")
 @Data
+@Getter
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,22 +34,26 @@ public class User implements UserDetails {
     private String password;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role",
-    joinColumns = @JoinColumn(name = "user_id"))
+            joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    private List<Product> products = new ArrayList<>();
     private LocalDateTime dateOfCreated;
 
+
     @PrePersist
-    private void init(){
+    private void init() {
         dateOfCreated = LocalDateTime.now();
     }
+
+    // security
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
     }
 
-    //sequrity
     @Override
     public String getUsername() {
         return email;

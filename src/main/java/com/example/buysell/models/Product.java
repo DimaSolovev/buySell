@@ -1,4 +1,4 @@
-package com.example.buysell.model;
+package com.example.buysell.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,22 +29,23 @@ public class Product {
     private int price;
     @Column(name = "city")
     private String city;
-    @Column(name = "author")
-    private String author;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+            mappedBy = "product")
     private List<Image> images = new ArrayList<>();
-
     private Long previewImageId;
-
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn
+    private User user;
     private LocalDateTime dateOfCreated;
+
     @PrePersist
-    private void init(){
+    private void init() {
         dateOfCreated = LocalDateTime.now();
     }
 
-    public void addImageToProduct(Image image){
+
+    public void addImageToProduct(Image image) {
         image.setProduct(this);
         images.add(image);
     }
-
 }
