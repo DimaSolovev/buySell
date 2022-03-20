@@ -40,7 +40,10 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<Product> products = new ArrayList<>();
     private LocalDateTime dateOfCreated;
-
+    
+    public boolean isAdmin(){
+        return roles.contains(Role.ROLE_ADMIN);
+    }
 
     @PrePersist
     private void init() {
